@@ -104,18 +104,29 @@
               </ul>
 
             <h3 id="wasm-tools-and-wasmtime-implementations">Wasm-tools and Wasmtime implementations</h2>
-            <p>The implementation effort of WasmFX
-            in <a href="https://github.com/bytecodealliance/wasmtime">wasmtime</a>
-            is led by <a href="https://dhil.net/research/">Daniel
-            Hillerstr&ouml;m</a>
-            and <a href="https://cosine.website/">Luna
-            Phipps-Costin</a>. There is a fair amount of engineering
-            work yet to be done, as the typed continuations proposal
-            depends on the <a href="">typed function references</a>
-            and <a href="">exception handling</a> proposals, neither
-            of which has been implemented in wasm-tools and wasmtime
-            yet. The tail call proposal is another nice-to-have
-            feature that is not yet implemented in wasmtime.</p>
+            <p>We are interested in Wasm engine implementations of
+              WasmFX.</p>
+
+           <p>Currently, we are working on implementing WasmFX
+              in <a href="https://github.com/bytecodealliance/wasm-tools">wasm-tools</a>
+              and <a href="https://github.com/bytecodealliance/wasmtime">wasmtime</a>
+              &mdash; the former being a toolbox for manipulating Wasm
+              modules and latter being a production-grade engine for
+              Wasm. The implementation effort is led
+              by <a href="https://dhil.net/research/">Daniel
+              Hillerstr&ouml;m</a>
+              and <a href="https://cosine.website/">Luna
+              Phipps-Costin</a>. There is a fair amount of engineering
+              work yet to be done, as the typed continuations proposal
+              depends on
+              the <a href="https://github.com/WebAssembly/typed-function-references">typed
+              function references</a>
+              and <a href="https://github.com/WebAssembly/exception-handling">exception
+              handling</a> proposals, both of which are yet to be
+              implemented in wasm-tools and
+              wasmtime. The <a href="https://github.com/WebAssembly/tail-call">tail
+              call</a> proposal is a nice-to-have feature that is not
+              yet implemented in wasmtime.</p>
 
             <p>Relevant resources:</p>
             <ul>

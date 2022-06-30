@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>WasmFX: Effect Handlers for WebAssembly</title>
+    <link rel="stylesheet" type="text/css" href="/wasmfx.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  </head>
+  <body>
+    <header class="page-section">
+      <div class="container-narrow">
+        <a class="site-logo" href="/"></a>
+        <h2>Effect Handlers for WebAssembly</h2>
+        <nav class="site-nav">
+          <a class="site-nav-item btn" href="/">Overview</a>
+          <a class="site-nav-item btn" href="/specs">Specs</a>
+          <a class="site-nav-item btn" href="/community">Community</a>
+        </nav>
+      </div>
+    </header>
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-lg-9 col-pop">
+<h1 id="typed-continuations-for-webassembly-language-extensions">Typed Continuations for WebAssembly Language Extensions</h2>
+
+<p>
+Based
+on <a href="https://github.com/WebAssembly/function-references/blob/master/proposals/function-references/Overview.md">typed
+reference proposal</a>
+and <a href="https://github.com/WebAssembly/exception-handling/blob/master/proposals/exception-handling/Exceptions.md">exception
+handling proposal</a>.
+</p>
+
+
+<h2 id="types">Types</h2>
+
+<h3>Defined Types</h3>
+
+<ul>
+  <li><code>cont <typeidx></code> is a new form of defined type
+    <ul>
+      <li><code>(cont $ft) ok</code> iff <code>$ft ok</code> and <code>$ft = [t1*] -> [t2*]</code></li>
+    </ul>
+  </li>
+</ul>
+
+
+<h2 id="instructions">Instructions</h2>
+
+<ul>
+  <li><code>cont.new &lt;typeidx&gt;</code> creates a new continuation
+      <ul>
+        <li><code>cont.new $ct : [(ref null? $ft)] -> [(ref $ct)]</code>
+          <ul>
+            <li>iff <code>$ct = cont $ft</code></li>
+          </ul>
+        </li>
+      </ul>
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <code>cont.bind <typidx></code> binds a continuation to (partial) arguments
+      <ul>
+        <li><code>cont.bind $ct : [t3* (ref null? $ct')] -> [(ref $ct)]</code>
+          <ul>
+            <li>
+              iff <code>$ct = cont $ft</code>
+            </li>
+            <li>
+              and <code>$ft = [t1*] -> [t2*]</code>
+            </li>
+            <li>
+              and <code>$ct' = cont $ft'</code>
+            </li>
+            <li>
+              and <code>$ft' = [t3* t1'*] -> [t2'*]</code>
+            </li>
+            <li>
+              and <code>[t1'*] -> [t2'*] <: [t1*] -> [t2*]</code>
+            </li>
+          </ul>
+        </li>
+      </ul>
+  </li>
+
+  <li><code>suspend <tagidx></code> suspends the current continuation
+      <ul>
+        <li><code>suspend $t : [t1*] -> [t2*]</code>
+          <ul>
+            <li>iff <code>tag $t : [t1*] -> [t2*]</code></li>
+          </ul>
+        </li>
+      </ul>
+  </li>
+
+  <li><code>resume (tag &lt;tagidx&gt; &lt;labelidx&gt;)*</code> resumes a continuation
+    <ul>
+      <li>- <code>resume (tag $e $l)* : [t1* (ref null? $ct)] -> [t2*]</code>
+        <ul>
+          <li>iff <code>$ct = cont $ft</code></li>
+          <li>and <code>$ft = [t1*] -> [t2*]</code></li>
+          <li>and <code>(tag $t : [te1*] -> [te2*])*</code></li>
+          <li>and <code>(label $l : [te1'* (ref null? $ct')])*</code></li>
+          <li>and <code>([te1*] <: [te1'*])*</code></li>
+          <li>and <code>($ct' = cont $ft')*</code></li>
+          <li>and <code>([te2*] -> [t2*] <: $ft')*</code></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+
+  <li><code>resume_throw <tagidx></code> aborts a continuation
+    <ul>
+      <li><code>resume_throw $e : [te* (ref null? $ct)] -> [t2*]</code>
+        <ul>
+          <li>iff <code>exception $e : [te*]</code></li>
+          <li>and <code>$ct = cont $ft</code></li>
+          <li>and <code>$ft = [t1*] -> [t2*]</code></li>
+        </ul>
+      </li>
+     </ul>
+  </li>
+
+  <li><code>barrier <blocktype> <instr>* end</code> blocks suspension
+    <ul>
+      <li><code>barrier $l bt instr* end : [t1*] -> [t2*]</code>
+        <ul>
+          <li>iff <code>bt = [t1*] -> [t2*]</code></li>
+          <li>and <code>instr* : [t1*] -> [t2*]</code> with labels extended with <code>[t2*]</code></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="reduction-semantics">Reduction semantics</h2>
+
+<h3 id="store-extensions">Store extensions</h3>
+
+<ul>
+  <li>New store component `tags` for allocated tags
+    <ul>
+      <li><code>S ::= {..., tags &lt;taginst&gt;*}</code></li>
+    </ul>
+  </li>
+
+  <li>A <i>tag instance</i> represents a control tag
+    <ul>
+      <li><code>taginst ::= {type &lt;tagtype&gt;}</code></li>
+    </ul>
+  </li>
+
+  <li>New store component <code>conts</code> for allocated continuations
+    <ul>
+      <li><code>S ::= {..., conts &lt;cont&gt;?*}</code></li>
+    </ul>
+  </li>
+
+  <li>A continuation is a context annotated with its hole's arity
+    <ul>
+      <li><code>cont ::= (E : n)</code></li>
+    </ul>
+  </li>
+</ul>
+
+
+<h3 id="administrative-instructions">Administrative instructions</h3>
+
+<ul>
+  <li><code>(ref.cont a)</code> represents a continuation value,
+  where <code>a</code> is a <i>continuation address</i> indexing into
+  the store's <code>conts</code> component
+    <ul>
+      <li>
+        <code>ref.cont a : [] -> [(ref $ct)]</code>
+        <ul>
+          <li>iff <code>S.conts[a] = epsilon \/ S.conts[a] = (E : n)</code></li>
+          <li>and <code>$ct = cont $ft</code></li>
+          <li>and <code>$ft = [t1^n] -> [t2*]</code></li>
+        </ul>
+      </li>
+    </ul>
+
+  <li><code>(handle{(&lt;tagaddr&gt; &lt;labelidx&gt;)*}?
+      &lt;instr&gt;* end)</code> represents an active handler (or a
+      barrier when no handler list is present)
+    <ul>
+      <li><code>(handle{(a $l)*}? instr* end) : [t1*] -> [t2*]</code>
+        <ul>
+          <li>iff <code>instr* : [t1*] -> [t2*]</code></li>
+          <li>and <code>(S.tags[a].type = [te1*] -> [te2*])*</code></li>
+          <li>and <code>(label $l : [te1'* (ref null? $ct')])*</code></li>
+          <li>and <code>([te1*] <: [te1'*])*</code></li>
+          <li>and <code>($ct' = cont $ft')*</code></li>
+          <li>and <code>([te2*] -> [t2*] <: $ft')*</code></li>
+       </ul>
+     </li>
+   </ul>
+ </ul>
+
+<h3 id="handler-contexts">Handler contexts</h3>
+
+<pre>
+  <code>
+H^ea ::=
+  _
+  val* H^ea instr*
+  label_n{instr*} H^ea end
+  frame_n{F} H^ea end
+  catch{...} H^ea end
+  handle{(ea' $l)*} H^ea end   (iff ea notin ea'*)
+  </code>
+</pre>
+
+
+<h3 id="reduction">Reduction</h3>
+
+<ul>
+  <li><code>S; F; (ref.null t) (cont.new $ct)  -->  S; F; trap</code></li>
+
+  <li><code>S; F; (ref.func fa) (cont.new $ct)  -->  S'; F; (ref.cont |S.conts|)</code>
+    <ul>
+      <li>iff <code>S' = S with conts += (E : n)</code></li>
+      <li>and <code>E = _ (invoke fa)</code></li>
+      <li>and <code>$ct = cont $ft</code></li>
+      <li>and <code>$ft = [t1^n] -> [t2*]</code></li>
+    </ul>
+  </li>
+
+  <li><code>S; F; (ref.null t) (cont.bind $ct)  -->  S; F; trap</code></li>
+
+  <li><code>S; F; (ref.cont ca) (cont.bind $ct)  -->  S'; F; trap</code>
+     <ul>
+       <li>iff <code>S.conts[ca] = epsilon</code></li>
+     </ul>
+  </li>
+
+  <li><code>S; F; v^n (ref.cont ca) (cont.bind $ct)  -->  S'; F; (ref.const |S.conts|)</code>
+    <ul>
+      <li>iff <code>S.conts[ca] = (E' : n')</code></li>
+      <li>and <code>$ct = cont $ft</code></li>
+      <li>and <code>$ft = [t1'*] -> [t2'*]</code></li>
+      <li>and <code>n = n' - |t1'*|</code></li>
+      <li>and <code>S' = S with conts[ca] = epsilon with conts += (E : |t1'*|)</code></li>
+      <li>and <code>E = E'[v^n _]</code></li>
+    </ul>
+  </li>
+
+  <li><code>S; F; (ref.null t) (resume (tag $e $l)*)  -->  S; F; trap</code></li>
+
+  <li><code>S; F; (ref.cont ca) (resume (tag $e $l)*)  -->  S; F; trap</code>
+    <ul>
+      <li>iff <code>S.conts[ca] = epsilon</code></li>
+    </ul>
+  </li>
+
+  <li><code>S; F; v^n (ref.cont ca) (resume (tag $e $l)*)  -->  S'; F; handle{(ea $l)*} E[v^n] end</code>
+    <ul>
+      <li>iff <code>S.conts[ca] = (E : n)</code></li>
+      <li>and <code>(ea = F.tags[$e])*</code></li>
+      <li>and <code>S' = S with conts[ca] = epsilon</code></li>
+    </ul>
+  </li>
+
+  <li><code>S; F; (ref.null t) (resume_throw $e)  -->  S; F; trap</code></li>
+
+  <li><code>S; F; (ref.cont ca) (resume_throw $e)  -->  S; F; trap</code>
+    <ul>
+      <li>iff <code>S.conts[ca] = epsilon</code></li>
+    </ul>
+  </li>
+
+  <li><code>S; F; v^m (ref.cont ca) (resume_throw $e)  -->  S'; F; E[v^m (throw $e)]</code>
+    <ul>
+      <li>iff <code>S.conts[ca] = (E : n)</code></li>
+      <li>and <code>S.tags[F.tags[$e]].type = [t1^m] -> [t2*]</code></li>
+      <li>and <code>S' = S with conts[ca] = epsilon</code></li>
+    </ul>
+  </li>
+
+  <li><code>S; F; (barrier bt instr* end)  -->  S; F; handle instr* end</code></li>
+
+  <li><code>S; F; (handle{(e $l)*}? v* end)  -->  S; F; v*</code></li>
+
+  <li><code>S; F; (handle H^ea[(suspend $e)] end)  --> S; F; trap</code>
+    <ul>
+      <li>iff <code>ea = F.tags[$e]</code></li>
+    </ul>
+  </li>
+
+  <li><code>S; F; (handle{(ea1 $l1)* (ea $l) (ea2 $l2)*} H^ea[v^n (suspend $e)] end)  --> S'; F; v^n (ref.cont |S.conts|) (br $l)</code>
+    <ul>
+      <li>iff <code>ea notin ea1*</code></li>
+      <li>and <code>ea = F.tags[$e]</code></li>
+      <li>and <code>S.tags[ea].type = [t1^n] -> [t2^m]</code></li>
+      <li>and <code>S' = S with conts += (H^ea : m)</code></li>
+    </ul>
+  </li>
+</ul>
+</div>
+<div class="col-xs-12 col-lg-3">
+<h6 class="side-title">Table of contents</h6>
+<nav class="side-nav">
+  <a class="side-nav-item" href="#types">Types</a>
+  <a class="side-nav-item" href="#instructions">Instructions</a>
+<a class="side-nav-item" href="#reduction-semantics">Reduction semantics</a>
+<ul>
+  <li><a class="side-nav-item" href="#store-extensions">Store extensions</a></li>
+  <li><a class="side-nav-item" href="#administrative-instructions">Administrative instructions</a></li>
+  <li><a class="side-nav-item" href="#handler-contexts">Handler contexts</a></li>
+  <li><a class="side-nav-item" href="#reductions">Reductions</a></li>
+</ul>
+</nav>
+</div>
+</div>
+</section>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>WasmFX: Effect Handlers for WebAssembly</title>
+    <link rel="stylesheet" type="text/css" href="/wasmfx.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  </head>
+  <body>
+    <header class="page-section">
+      <div class="container-narrow">
+        <a class="site-logo" href="/"></a>
+        <h2>Effect Handlers for WebAssembly</h2>
+        <nav class="site-nav">
+          <a class="site-nav-item btn" href="/">Overview</a>
+          <a class="site-nav-item btn" href="/specs">Specs</a>
+          <a class="site-nav-item btn" href="/community">Community</a>
+        </nav>
+      </div>
+    </header>
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-lg-9 col-pop">
+            <h1 id="community">Community</h1>
+            <h2 id="About">About</h2>
+            <p>
+              WasmFX is a subsidiary project of the UKRI funded
+              project <a href="https://effect-handlers.org">effect
+              handler oriented programming</a> (MR/T043830/1) between
+              February 2021 and January 2025, which is led
+              by <a href="https://homepages.inf.ed.ac.uk/~slindley">Sam
+              Lindley</a> at The University of Edinburgh, United
+              Kingdom.
+            </p>
+            <h2 id="resources">Resources</h2>
+            <p>
+              WasmFX is an open source project being developed in the
+              public domain.
+            </p>
+
+            <ul>
+              <li>WasmFX <a href="/specs/core">typed continuations core extensions document</a>.</li>
+              <li>WasmFX <a href="/specs/explainer">typed continuations design explainer document</a>.</li>
+              <li><a href="https://github.com/effect-handlers/wasm-spec">Wasm
+              reference interpreter</a> extended with the typed
+              continuation proposal.</li>
+              <li>WasmFX typed continuations implementation
+              in <a href="https://github.com/effect-handlers/wasm-tools">wasm-tools</a>
+              and <a href="https://github.com/effect-handlers/wasmtime">wasmtime</a>.</li>
+              <li>Follow the <a href="https://twitter.com/wasmfx">WasmFX Twitter account</a> to stay up-to-date.</li>
+              <li>The <a href="https://github.com/WebAssembly/stack-switching">WebAssembly Stack Switching subgroup</a>.</li>
+              <li><a href="https://effect-handlers.org">The effect handler oriented programming project website</a>.</li>
+            </ul>
+            <h2 id="feedback">Submitting feedback and issues</h2>
+            <p>We welcome community and developer feedback on all
+            aspects of WasmFX, including the high-level design, binary
+            format, developer experience, and browser
+            implementations.</p>
+
+            <p>Please contribute your feedback or issues in the following forums:</p>
+            <ul>
+              <li>High level design feedback: <a href="https://github.com/WebAssembly/stack-switching">WebAssembly/stack-switching</a></li>
+              <li>Specification bugs / suggestions: <a href="https://github.com/effect-handlers/wasm-spec">effect-handlers/wasm-spec</a></li>
+              <li>Test suite / reference interpreter issues: <a href="https://github.com/effect-handlers/wasm-spec">effect-handlers/wasm-spec</a></li>
+              <li>Wasm-tools issues: <a href="https://github.com/effect-handlers/wasm-tools">effect-handlers/wasm-tools</a></li>
+              <li>Wasmtime bugs: <a href="https://github.com/effect-handlers/wasmtime">effect-handlers/wasmtime</a></li>
+              <li>Website bugs: <a href="https://github.com/wasmfx/wasmfx.github.io">WasmFX/wasmfx.github.io</a></li>
+            </ul>
+
+            <h2 id="contributing-to-wasmfx">Contributing to WasmFX</h2>
+            <p>We welcome external contributions to WasmFX. There are
+              multiple ways to contribute to the project.</p>
+
+            <h3 id="design-and-discussions">Design and discussions</h3>
+            <p>A useful and fairly lightweight way to contribute is by
+            joining the discussions about stack switching in
+            WebAssembly on the official stack switching working
+            group.</p>
+
+            <p>Relevant resources:</p>
+            <ul>
+              <li>Stack switching subgroup repository: <a href="https://github.com/WebAssembly/stack-switching">WebAssembly/stack-switching</a>.</li>
+              <li>WebAssembly community <a href="https://webassembly.org/community/code-of-conduct/">Code of Ethnics and Professional Conduct</a>.</li>
+            </ul>
+
+            <h3 id="reference-interpreter-implementation">Reference interpreter implementation</h3>
+            <p>The reference interpreter implementation of WasmFX is
+            led by <a href="https://dhil.net/research/">Daniel Hillerstr&ouml;m</a>
+            and <a href="https://people.mpi-sws.org/~rossberg/">Andreas Rossberg</a>. As of writing, the
+            reference interpreter implements only the core of the
+            typed continuations proposal, we have yet to implement the
+            various extensions.</p>
+            <p>
+              Relevant resources:
+              </p>
+              <ul>
+                <li>Reference interpreter
+                repository: <a href="https://github.com/effect-handlers/wasm-spec">effect-handlers/wasm-spec</a>.</li>
+                <li>The explainer document for typed
+                continuations: <a href="https://github.com/effect-handlers/wasm-spec/blob/master/proposals/continuations/Explainer.md">effect-handlers/wasm-spec</a>.</li>
+              </ul>
+
+            <h3 id="wasm-tools-and-wasmtime-implementations">Wasm-tools and Wasmtime implementations</h2>
+            <p>The implementation effort of WasmFX
+            in <a href="https://github.com/bytecodealliance/wasmtime">wasmtime</a>
+            is led by <a href="https://dhil.net/research/">Daniel
+            Hillerstr&ouml;m</a>
+            and <a href="https://cosine.website/">Luna
+            Phipps-Costin</a>. There is a fair amount of engineering
+            work yet to be done, as the typed continuations proposal
+            depends on the <a href="">typed function references</a>
+            and <a href="">exception handling</a> proposals, neither
+            of which has been implemented in wasm-tools and wasmtime
+            yet. The tail call proposal is another nice-to-have
+            feature that is not yet implemented in wasmtime.</p>
+
+            <p>Relevant repositories:</p>
+            <ul>
+              <li>Wasm-tools repository: <a href="https://github.com/effect-handlers/wasm-tools">effect-handlers/wasm-tools</a>.</li>
+              <li>Wasmtime repository: <a href="https://github.com/effect-handlers/wasmtime">effect-handlers/wasmtime</a>.</li>
+              <li>Typed function references specification: <a href="https://github.com/WebAssembly/typed-function-references">WebAssembly/typed-function-references</a>.</li>
+              <li>Exception handling specification: <a href="https://github.com/WebAssembly/exception-handling">WebAssembly/exception-handling</a>.</li>
+              <li>Tail call specification: <a href="https://github.com/WebAssembly/tail-call">WebAssembly/tail-call</a>.</li>
+            </ul>
+
+            <h3 id="toolchains">Toolchains</h3>
+            <p>We are interested in toolchains to compile programs
+            that can take advantage of the WasmFX feature set of
+            Wasm. Currently, <a href="https://dhil.net/research/">Daniel
+            Hillerstr&ouml;m</a>
+            and <a href="https://cosine.website/">Luna
+            Phipps-Costin</a> are building a toolchain that compiles
+            effect handlers program written in <a href="https://links-lang.org">Links</a> to Wasm via
+            Jankscripten.</p>
+
+            <p>Relevant resources:</p>
+            <ul>
+              <li>Links repository: <a href="https://github.com/links-lang/links">links-lang/links</a>.</li>
+              <li>Jankscripten repository: <a href="https://github.com/nuprl/jankscripten">nurpl/jankscripten</a>.</li>
+            </ul>
+          </div>
+          <div class="col-xs-12 col-lg-3">
+            <h6 class="side-title">Table of contents</h6>
+            <nav class="side-nav">
+              <a class="side-nav-item" href="#resources">About</a>
+              <a class="side-nav-item" href="#resources">Resources</a>
+              <a class="side-nav-item" href="#feedback">Feedback</a>
+              <a class="side-nav-item" href="#contributing-to-wasmfx">Contributing</a>
+              <ul>
+                <li><a class="side-nav-item" href="#design-and-discussions">Design and discussions</a></li>
+                <li><a class="side-nav-item" href="#reference-interpreter-implementation">Reference interpreter</a></li>
+                <li><a class="side-nav-item" href="#wasm-tools-and-wasmtime-implementations">Wasm-tools and wasmtime</a></li>
+                <li><a class="side-nav-item" href="#toolchains">Toolchains</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

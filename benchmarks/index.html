@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>Benchmarks | WasmFX: Effect Handlers for WebAssembly</title>
+    <link rel="stylesheet" type="text/css" href="/wasmfx.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  </head>
+  <body>
+    <header class="page-section">
+      <div class="container-narrow">
+        <a class="site-logo" href="/"></a>
+        <h2>Effect Handlers for WebAssembly</h2>
+        <nav class="site-nav">
+          <a class="site-nav-item btn" href="/">Overview</a>
+          <a class="site-nav-item btn" href="/specs">Specs</a>
+          <a class="site-nav-item btn" href="/community">Community</a>
+          <a class="site-nav-item btn" href="/benchmarks">Benchmarks</a>
+        </nav>
+      </div>
+    </header>
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-lg-9 col-pop">
+            <h1 id="benchmarks">Benchmarks</h1>
+            <p>
+              This page was last updated on 2026-10-31.
+            </p>
+
+            <h2 id="fiber-c">Fiber-C benchmark results</h2>
+
+            <h3 id="relative">Relative performance of Asyncify vs WasmFX</h3>
+            <img src="fiber-c/nonswitch/charts/relative/relative.png" alt="Relative performance of Asyncify vs WasmFX" width="100%">
+
+            <h3 id="binary">Binary sizes</h3>
+            <img src="fiber-c/nonswitch/charts/relative/relative_binary_sizes.png" alt="Binary sizes of Asyncify vs WasmFX" width="100%">
+            
+            <h3 id="abs-bench">Absolute performance by benchmark</h3>
+            <img src="fiber-c/nonswitch/charts/absolute_benchmarks/absolute_itersum.png" width="100%">
+            <img src="fiber-c/nonswitch/charts/absolute_benchmarks/absolute_treesum.png" width="100%">
+            <img src="fiber-c/nonswitch/charts/absolute_benchmarks/absolute_pi.png" width="100%">
+            <!-- <img src="fiber-c/nonswitch/charts/absolute_benchmarks/absolute_c10m.png" width="100%"> -->
+
+            <h3 id="abs-engine">Absolute performance by engine</h3>
+            <img src="fiber-c/nonswitch/charts/absolute_engines/absolute_d8.png" width="100%">
+            <img src="fiber-c/nonswitch/charts/absolute_engines/absolute_wasmtime.png" width="100%">
+            <img src="fiber-c/nonswitch/charts/absolute_engines/absolute_wizard.png" width="100%">
+
+            <h2 id="switch">Switch benchmark results</h2>
+
+            <h3 id="switch-relative">Relative performance of switch benchmarks, Asyncify vs WasmFX</h3>
+            <img src="fiber-c/switch/charts/relative/relative.png" alt="Relative performance of switch benchmarks, Asyncify vs WasmFX" width="100%">
+
+            <h3 id="switch-binary">Switch binary sizes</h3>
+            <img src="fiber-c/switch/charts/relative/relative_binary_sizes.png" alt="Switch binary sizes of Asyncify vs WasmFX" width="100%">
+
+            <h3 id="switch-abs-bench">Switch vs non-switch performance, by engine</h3>
+            <img src="fiber-c/switch/charts/switch/switch_d8.png" width="100%">
+            <img src="fiber-c/switch/charts/switch/switch_wasmtime.png" width="100%">
+            <img src="fiber-c/switch/charts/switch/switch_wizard.png" width="100%">
+
+            <h3 id="switch-abs-bench">Absolute performance of switch benchmarks by benchmark</h3>
+            <img src="fiber-c/switch/charts/absolute_benchmarks/absolute_itersum.png" width="100%">
+            <img src="fiber-c/switch/charts/absolute_benchmarks/absolute_roundrobin.png" width="100%">
+            <img src="fiber-c/switch/charts/absolute_benchmarks/absolute_pi.png" width="100%">
+
+            <h3 id="switch-abs-engine">Absolute performance of switch benchmarks by engine</h3>
+            <img src="fiber-c/switch/charts/absolute_engines/absolute_d8.png" width="100%">
+            <img src="fiber-c/switch/charts/absolute_engines/absolute_wasmtime.png" width="100%">
+            <img src="fiber-c/switch/charts/absolute_engines/absolute_wizard.png" width="100%">
+
+          </div>
+          <div class="col-xs-12 col-lg-3">
+            <h6 class="side-title">Table of contents</h6>
+            <nav class="side-nav">
+              <a class="side-nav-item" href="#fiber-c">Fiber-C</a>
+              <ul>
+                <li><a class="side-nav-item" href="#relative">Relative performance</a></li>
+                <li><a class="side-nav-item" href="#binary">Binary sizes</a></li>
+                <li><a class="side-nav-item" href="#abs-bench">Absolute performance by benchmark</a></li>
+                <li><a class="side-nav-item" href="#abs-engine">Absolute performance by engine</a></li>
+              </ul>
+              <a class="side-nav-item" href="#switch">Switch</a>
+              <ul>
+                <li><a class="side-nav-item" href="#switch-relative">Relative performance</a></li>
+                <li><a class="side-nav-item" href="#switch-binary">Binary sizes</a></li>
+                <li><a class="side-nav-item" href="#switch-abs-bench">Absolute performance by benchmark</a></li>
+                <li><a class="side-nav-item" href="#switch-abs-engine">Absolute performance by engine</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
